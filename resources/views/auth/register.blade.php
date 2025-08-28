@@ -16,6 +16,18 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+
+     <div class="mt-4">
+        <x-input-label for="user_type" :value="__('User Type')" />
+        <select id="user_type" name="user_type" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <option value="">-- Select User Type --</option>
+            <option value="admin" {{ old('user_type') == 'admin' ? 'selected' : '' }}>Admin</option>
+            <option value="customer" {{ old('user_type') == 'customer' ? 'selected' : '' }}>Customer</option>
+        </select>
+        <x-input-error :messages="$errors->get('user_type')" class="mt-2" />
+    </div>
+
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
