@@ -3,16 +3,22 @@
     use App\Http\Controllers\ProfileController;
     use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
+    use App\Http\Controllers\ProductController;
+
 
     Route::get('/', function () {
         return view('welcome');
     });
     // Admin routes
-    Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+    Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
+        Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+
+        //product
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     });
+
 
     // Customer routes
     Route::prefix('customer')->name('customer.')->middleware('auth:customer')->group(function () {
