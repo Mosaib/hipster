@@ -6,17 +6,10 @@
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
-        <a href="{{ route('admin.products.index') }}" class="px-4 py-2 dark:bg-gray-800 rounded-lg shadow bg-white">
-            Refresh Products
-        </a>
-
-        <div class="mt-6">
             <a href="{{ route('admin.products.create') }}"
                 class="px-4 py-2 dark:bg-gray-800 rounded-lg shadow bg-white">
                 Add Products
             </a>
-        </div>
-
 
         <div class="mt-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
             <table class="w-full">
@@ -57,7 +50,7 @@
                                     </svg>
                                 </a>
 
-                                <a href=""
+                                <a href="{{ route('admin.products.edit', $product->id) }}"
                                 class="text-green-600 hover:text-green-800" title="Edit">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +59,7 @@
                                     </svg>
                                 </a>
 
-                                <form action="" method="POST"
+                                <form action="{{ route('admin.products.destroy', $product->id)}}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this product?');">
                                     @csrf
                                     @method('DELETE')
@@ -79,9 +72,6 @@
                                     </button>
                                 </form>
                             </td>
-                            `
-
-
                         </tr>
                     @endforeach
                 </tbody>

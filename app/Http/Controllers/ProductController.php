@@ -80,8 +80,16 @@ class ProductController extends Controller
             $data['image'] = $request->file('image')->store('products', 'public');
         }
 
-        Product::update($data);
+        $product->update($data);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+    }
+
+
+    public function destroy($id){
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
+
     }
 }
