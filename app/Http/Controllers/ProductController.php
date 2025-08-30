@@ -21,4 +21,67 @@ class ProductController extends Controller
     {
         return view('admin.products.create');
     }
+
+
+    //store
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price'       => 'required|numeric',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'category'    => 'required|string|max:255',
+            'stock'       => 'required|integer|min:0',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::create($data);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+    }
+
+    // get by id
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.products.show', compact('product'));
+    }
+
+
+    //edit by id
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.products.edit', compact('product'));
+    }
+
+    //update
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $request->validate([
+            'name'        => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'price'       => 'nullable|numeric',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'category'    => 'nullable|string|max:255',
+            'stock'       => 'nullable|integer|min:0',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::update($data);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+    }
 }
