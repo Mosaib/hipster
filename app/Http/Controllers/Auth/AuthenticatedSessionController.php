@@ -24,11 +24,37 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // $request->authenticate();
 
-        $request->session()->regenerate();
+        // $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // return redirect()->intended(route('dashboard', absolute: false));
+        $credentials = $request->only('email', 'password');
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'These credentials do not match our records.',
+            ]);
+        }
+
+        if ($user->user_type === 'admin') {
+            if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard');
+            }
+        }
+
+        if ($user->user_type === 'customer') {
+            if (Auth::guard('customer')->attempt($credentials, $request->boolean('remember'))) {
+                $request->session()->regenerate();
+                return redirect()->route('customer.dashboard');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials provided.',
+            ]);
     }
 
     /**
@@ -36,7 +62,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        // Auth::guard('web')->logout();
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->logout();
+        }
+
+        if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+        }
 
         $request->session()->invalidate();
 
