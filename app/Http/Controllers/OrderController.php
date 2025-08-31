@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
-
+use App\Events\OrderStatusUpdated;
 
 class OrderController extends Controller
 {
@@ -27,6 +27,8 @@ class OrderController extends Controller
 
         $order = Order::findOrFail($id);
         $order->update(['status' => $request->status]);
+        event(new OrderStatusUpdated($order->id, $order->status));
+
 
         return redirect()->route('admin.order.index')->with('success', 'Order status updated successfully.');
     }

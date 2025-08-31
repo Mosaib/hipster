@@ -33,7 +33,7 @@
 
                             <td class="border px-4 py-2">
                                 <span class="px-2 py-1 rounded
-                                    @if($order->status == 'pending')   text-gray-600
+                                    @if($order->status == 'pending')   text-red-600
                                     @elseif($order->status == 'shipped') text-black-600
                                     @elseif($order->status == 'delivered') text-green-600
                                     @endif">
