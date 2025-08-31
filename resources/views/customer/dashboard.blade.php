@@ -10,6 +10,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
+
+                    <div class="mt-6 flex space-x-4">
+                         <a href="{{ route('customer.products.index') }}"
+                            class="px-4 py-2 dark:bg-gray-800 text-blue rounded-lg shadow">
+                            Get Products
+                        </a>
+
+                        <a href="{{ route('customer.orders.index') }}"
+                           class="px-4 py-2  ml-3 dark:bg-gray-800 text-blue rounded-lg shadow">
+                            My Order
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
