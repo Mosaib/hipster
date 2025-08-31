@@ -18,6 +18,18 @@
                 </div>
             </div>
 
+            @if (session('success'))
+                <div class="mt-4 p-3 text-green-600 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mt-4 p-3 text-red-600 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">

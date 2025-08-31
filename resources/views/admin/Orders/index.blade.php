@@ -21,6 +21,7 @@
                         <th class="px-4 py-2">Product</th>
                         <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Quantity</th>
+                        <th class="px-4 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,20 @@
                             <td class="border px-4 py-2">{{ $order->product?->name ?? 'N/A' }}</td>
                             <td class="border px-4 py-2">{{ $order->status }}</td>
                             <td class="border px-4 py-2">{{ $order->quantity }}</td>
+                            <td class="border px-4 py-2">
+                                <form action="{{ route('admin.order.update', $order->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" class="border rounded px-2 py-1">
+                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    </select>
+                                    <button type="submit" class="ml-2 px-4 dark:bg-gray-800 rounded-lg shadow bg-white">
+                                        Update
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

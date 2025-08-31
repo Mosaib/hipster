@@ -24,14 +24,19 @@
 
         //order
         Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
+        Route::put('/orders/{id}', [OrderController::class, 'updateOrder'])->name('order.update');
     });
 
 
     // Customer routes
-    Route::prefix('customer')->name('customer.')->middleware('auth:customer')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('customer.dashboard');
-        })->name('dashboard');
+    Route::prefix('customer')->name('customer.')->middleware(['auth:customer', 'customer'])->group(function () {
+        Route::get('/dashboard', fn() => view('customer.dashboard'))->name('dashboard');
+
+        //product
+        Route::get('/products', [ProductController::class, 'getByCustomer'])->name('products.index');
+        //order
+        Route::post('/orders/{productId}', [OrderController::class, 'placeOrderByCustomer'])->name('orders.store');
+        Route::get('/orders', [OrderController::class, 'getByCustomerOrders'])->name('orders.index');
     });
 
     Route::get('/dashboard', function () {

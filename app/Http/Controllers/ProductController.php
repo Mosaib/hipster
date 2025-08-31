@@ -92,4 +92,22 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
 
     }
+
+
+
+    //**Customer */
+    // get by customer
+    public function getByCustomer(Request $request){
+        $query = Product::query();
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('category', 'like', '%' . $request->search . '%')
+                ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+        $query->orderBy('id', $request->sort_dir ?? 'desc');
+        $products =  $query->paginate($request->limit ?? 10);
+        return view('customer.products.index', compact('products'));
+    }
 }
