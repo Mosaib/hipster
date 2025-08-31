@@ -4,7 +4,7 @@
     use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\ProductController;
-
+    use App\Http\Controllers\OrderController;
 
     Route::get('/', function () {
         return view('welcome');
@@ -21,6 +21,9 @@
         Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/product/{id}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        //order
+        Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     });
 
 

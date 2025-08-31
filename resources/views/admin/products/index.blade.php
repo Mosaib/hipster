@@ -6,8 +6,13 @@
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
+
+            <a href="{{ route('admin.dashboard') }}"
+            class="px-4 py-2 dark:bg-gray-800 rounded-lg shadow bg-white">
+                Dashboard
+            </a>
             <a href="{{ route('admin.products.create') }}"
-                class="px-4 py-2 dark:bg-gray-800 rounded-lg shadow bg-white">
+                class="px-4 py-2 ml-3 dark:bg-gray-800 rounded-lg shadow bg-white">
                 Add Products
             </a>
 
