@@ -5,6 +5,7 @@
     use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\ProductController;
     use App\Http\Controllers\OrderController;
+    use Illuminate\Support\Facades\Broadcast;
 
     Route::get('/', function () {
         return view('welcome');
@@ -58,5 +59,25 @@
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+
+
+    // Route::middleware(['web'])->group(function () {
+    //     Route::post('/broadcasting/auth', function (Illuminate\Http\Request $request) {
+    //         if (Auth::guard('customer')->check()) {
+    //             $user = Auth::guard('customer')->user();
+    //             $request->setUserResolver(function () use ($user) {
+    //                 return $user;
+    //             });
+    //         }
+    //         else {
+    //             abort(403);
+    //         }
+    //         return \Illuminate\Support\Facades\Broadcast::auth($request);
+    //     });
+    // });
+Route::get('/broadcasting/auth', function () {
+    dd(auth()->guard('customer')->user());
+});
+
 
     require __DIR__.'/auth.php';

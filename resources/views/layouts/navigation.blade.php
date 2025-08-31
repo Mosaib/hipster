@@ -18,6 +18,13 @@
                 </div>
             </div>
 
+            <script>
+                window.Laravel = {
+                    userId: {{ auth()->id() ?? 'null' }}
+                };
+                console.log("Laravel user ID:", {{ auth()->id() ?? 'null' }});
+            </script>
+
             @if (session('success'))
                 <div class="mt-4 p-3 text-green-600 rounded">
                     {{ session('success') }}
