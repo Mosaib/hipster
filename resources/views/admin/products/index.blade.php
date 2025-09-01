@@ -5,6 +5,7 @@
         </h2>
     </x-slot>
 
+
     <div class="py-6 max-w-7xl mx-auto">
 
             <a href="{{ route('admin.dashboard') }}"
@@ -15,6 +16,25 @@
                 class="px-4 py-2 ml-3 dark:bg-gray-800 rounded-lg shadow bg-white">
                 Add Products
             </a>
+
+            <a href="{{ route('admin.products.downloadCsv') }}"
+                class="px-4 py-2 ml-3 dark:bg-gray-800 rounded-lg shadow bg-white">
+                Download CSV
+            </a>
+
+            <div class="py-6 max-w-7xl mx-auto">
+                <div class="bg-white mt-6 dark:bg-gray-800 shadow sm:rounded-lg p-6">
+                        <form action="{{ route('admin.products.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="file">Upload CSV</label>
+                                <input type="file" name="file" accept=".csv" required>
+                            </div>
+                            <button type="submit" class="bg-gray-500 text-white rounded-lg p-1 shadow">Upload CSV</button>
+                        </form>
+                    </div>
+            </div>
+
 
         <div class="mt-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
             <table class="w-full">

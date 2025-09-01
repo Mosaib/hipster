@@ -23,6 +23,9 @@
         Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/product/{id}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/download-csv', [ProductController::class, 'downloadCsv'])->name('products.downloadCsv');
+        Route::post('import', [ProductController::class, 'import'])->name('products.import');
+
 
         //order
         Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
