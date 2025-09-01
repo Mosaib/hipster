@@ -5,13 +5,14 @@
     use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\ProductController;
     use App\Http\Controllers\OrderController;
-    use Illuminate\Support\Facades\Broadcast;
+    use App\Http\Controllers\UserController;
+    use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
     Route::get('/', function () {
         return view('welcome');
     });
     // Admin routes
-    Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin', 'online'])->group(function () {
         Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
 
         //product
@@ -26,11 +27,14 @@
         //order
         Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
         Route::put('/orders/{id}', [OrderController::class, 'updateOrder'])->name('order.update');
+
+        //User
+        Route::get('/users', [UserController::class, 'index'])->name('user.index');
     });
 
 
     // Customer routes
-    Route::prefix('customer')->name('customer.')->middleware(['auth:customer', 'customer'])->group(function () {
+    Route::prefix('customer')->name('customer.')->middleware(['auth:customer', 'customer', 'online'])->group(function () {
         Route::get('/dashboard', fn() => view('customer.dashboard'))->name('dashboard');
 
         //product
@@ -60,24 +64,7 @@
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-
-    // Route::middleware(['web'])->group(function () {
-    //     Route::post('/broadcasting/auth', function (Illuminate\Http\Request $request) {
-    //         if (Auth::guard('customer')->check()) {
-    //             $user = Auth::guard('customer')->user();
-    //             $request->setUserResolver(function () use ($user) {
-    //                 return $user;
-    //             });
-    //         }
-    //         else {
-    //             abort(403);
-    //         }
-    //         return \Illuminate\Support\Facades\Broadcast::auth($request);
-    //     });
-    // });
-Route::get('/broadcasting/auth', function () {
-    dd(auth()->guard('customer')->user());
-});
-
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
 
     require __DIR__.'/auth.php';

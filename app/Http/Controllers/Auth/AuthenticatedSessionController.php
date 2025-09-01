@@ -64,17 +64,20 @@ class AuthenticatedSessionController extends Controller
     {
         // Auth::guard('web')->logout();
         if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->user()->update(['is_online' => false]);
             Auth::guard('admin')->logout();
         }
 
         if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->user()->update(['is_online' => false]);
             Auth::guard('customer')->logout();
         }
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+        // event(new \App\Events\UserOffline($user));
 
-        return redirect('/');
+        return redirect('/dashboard');
     }
 }

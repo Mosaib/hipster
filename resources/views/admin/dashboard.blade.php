@@ -21,6 +21,11 @@
                            class="px-4 py-2  ml-3 dark:bg-gray-800 text-blue rounded-lg shadow">
                             Manage Order
                         </a>
+
+                        <a href="{{ route('admin.user.index') }}"
+                           class="px-4 py-2  ml-3 dark:bg-gray-800 text-blue rounded-lg shadow">
+                            User
+                        </a>
                     </div>
 
                 </div>
