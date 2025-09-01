@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Response;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProductsImport;
+
 
 class ProductController extends Controller
 {
@@ -92,6 +96,64 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
 
     }
+
+    //download in csv
+    public function downloadCsv()
+    {
+        $products = Product::all();
+
+        $filename = 'products_' . date('Y-m-d_H-i-s') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+        $columns = ['ID', 'Name', 'Description', 'Price', 'Category', 'Stock', 'Image', 'Created At', 'Updated At'];
+        $callback = function() use ($products, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($products as $product) {
+                fputcsv($file, [
+                    $product->id,
+                    $product->name,
+                    $product->description,
+                    $product->price,
+                    $product->category,
+                    $product->stock,
+                    $product->image,
+                    $product->created_at,
+                    $product->updated_at,
+                ]);
+            }
+            fclose($file);
+        };
+        return Response::stream($callback, 200, $headers);
+    }
+
+
+    //import
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,xlsx,txt|max:204800',
+        ]);
+
+        try {
+            $import = new ProductsImport;
+
+            Excel::import($import, $request->file('file'));
+
+            if (!empty($import->failuresMessages)) {
+                return redirect()->back()->with('error', $import->failuresMessages);
+            }
+
+            return redirect()->back()->with('success', 'CSV/Excel imported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['file' => $e->getMessage()]);
+        }
+    }
+
+
 
 
 
