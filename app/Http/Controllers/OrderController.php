@@ -26,6 +26,11 @@ class OrderController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
+        if ($order->status === 'delivered') {
+        return redirect()->route('admin.order.index')
+                ->with('error', 'Delivered orders cannot be updated.');
+        }
+
         $order->update(['status' => $request->status]);
         event(new OrderStatusUpdated($order->id, $order->status));
 
