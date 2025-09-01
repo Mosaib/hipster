@@ -43,9 +43,11 @@
                                         <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
                                         <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                                     </select>
+                                    @if($order->status !== 'delivered')
                                     <button type="submit" class="ml-2 px-4 dark:bg-gray-800 rounded-lg shadow bg-white">
                                         Update
                                     </button>
+                                    @endif
                                 </form>
                             </td>
                         </tr>
