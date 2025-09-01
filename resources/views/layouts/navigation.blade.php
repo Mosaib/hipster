@@ -22,7 +22,7 @@
                 window.Laravel = {
                     userId: {{ auth()->id() ?? 'null' }}
                 };
-                console.log("Laravel user ID:", {{ auth()->id() ?? 'null' }});
+                console.log("user ID:", {{ auth()->id() ?? 'null' }});
             </script>
 
             @if (session('success'))
